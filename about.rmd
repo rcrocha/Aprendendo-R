@@ -5,4 +5,18 @@ date: "05/10/2019"
 output: html_document
 ---
 
-# An student discovering the amazing world of R.
+---
+title: Nineteen Years Later
+author: Harry Potter
+date: July 31, 2016
+output:
+  prettydoc::html_pretty:
+    theme: cayman
+    highlight: github
+    math: katex
+    
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## An student discovering the amazing world of R.
