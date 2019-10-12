@@ -1,0 +1,8 @@
+name: "Aprendendo R"
+navbar:
+  title: "Aprendendo R"
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "About"
+      href: about.html

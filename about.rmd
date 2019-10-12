@@ -1,0 +1,8 @@
+---
+title: "About"
+author: "Rubens Cabral da Rocha"
+date: "05/10/2019"
+output: html_document
+---
+
+# An student discovering the amazing world of R.
