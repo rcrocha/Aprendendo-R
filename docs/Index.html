@@ -298,24 +298,106 @@ $(document).ready(function () {
 </div>
 
 
-<div id="r-markdown" class="section level2">
-<h2>R Markdown</h2>
-<p>This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <a href="http://rmarkdown.rstudio.com" class="uri">http://rmarkdown.rstudio.com</a>.</p>
-<p>When you click the <strong>Knit</strong> button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:</p>
-<pre class="r"><code>summary(cars)</code></pre>
-<pre><code>##      speed           dist       
-##  Min.   : 4.0   Min.   :  2.00  
-##  1st Qu.:12.0   1st Qu.: 26.00  
-##  Median :15.0   Median : 36.00  
-##  Mean   :15.4   Mean   : 42.98  
-##  3rd Qu.:19.0   3rd Qu.: 56.00  
-##  Max.   :25.0   Max.   :120.00</code></pre>
+<div id="analise-exploratoria-de-dados-inicial" class="section level1">
+<h1>Analise Exploratória de dados inicial</h1>
+<p>O objetivo é entender o uso de modelos de classificação tomando como base o dataset Iris do R.</p>
+<div id="dataset-iris" class="section level2">
+<h2>Dataset Iris</h2>
+<pre class="r"><code>summary(iris)</code></pre>
+<pre><code>##   Sepal.Length    Sepal.Width     Petal.Length    Petal.Width   
+##  Min.   :4.300   Min.   :2.000   Min.   :1.000   Min.   :0.100  
+##  1st Qu.:5.100   1st Qu.:2.800   1st Qu.:1.600   1st Qu.:0.300  
+##  Median :5.800   Median :3.000   Median :4.350   Median :1.300  
+##  Mean   :5.843   Mean   :3.057   Mean   :3.758   Mean   :1.199  
+##  3rd Qu.:6.400   3rd Qu.:3.300   3rd Qu.:5.100   3rd Qu.:1.800  
+##  Max.   :7.900   Max.   :4.400   Max.   :6.900   Max.   :2.500  
+##        Species      cluster     
+##  setosa    :50   Min.   :1.000  
+##  versicolor:50   1st Qu.:1.000  
+##  virginica :50   Median :1.000  
+##                  Mean   :1.647  
+##                  3rd Qu.:2.000  
+##                  Max.   :3.000</code></pre>
 </div>
-<div id="including-plots" class="section level2">
-<h2>Including Plots</h2>
-<p>You can also embed plots, for example:</p>
-<p><img src="Index_files/figure-html/pressure-1.png" width="672" /></p>
-<p>Note that the <code>echo = FALSE</code> parameter was added to the code chunk to prevent printing of the R code that generated the plot.</p>
+<div id="instalando-pacotes" class="section level2">
+<h2>Instalando pacotes</h2>
+<p>Para este caso precisaremos instalar a biblioteca <a href="https://cran.r-project.org/web/packages/kohonen/index.html">kohonen</a></p>
+<pre class="r"><code>install.packages(&quot;kohonen&quot;)</code></pre>
+<pre><code>## Error in install.packages : Updating loaded packages</code></pre>
+</div>
+<div id="carrega-a-biblioteca-kohonen" class="section level2">
+<h2>Carrega a biblioteca kohonen</h2>
+<pre class="r"><code>library(&quot;kohonen&quot;)</code></pre>
+</div>
+<div id="gerando-semente" class="section level2">
+<h2>Gerando semente</h2>
+<p>Para que todos os resultados gerados de forma randomica seja sempre os mesmo é preciso definir uma semente.</p>
+<pre class="r"><code>set.seed(593)</code></pre>
+</div>
+<div id="fazendo-a-escala-e-normalizacao-dos-dados-do-dataset-iris" class="section level2">
+<h2>Fazendo a escala e normalização dos dados do dataset iris:</h2>
+<p>Media da coluna - valor do atributo dividido pelo desvio padrão da coluna</p>
+<pre class="r"><code>iris.sc = scale(iris[, 1:4])</code></pre>
+</div>
+<div id="fazendo-o-setup-da-grade-de-vizinhanca-da-rede-som" class="section level2">
+<h2>Fazendo o setup da grade de vizinhança da rede SOM:</h2>
+<pre class="r"><code>iris.grid = somgrid(xdim = 5, ydim=5, topo=&quot;hexagonal&quot;)</code></pre>
+</div>
+<div id="constroi-o-modelo-de-rede-com-os-dados-do-dataset-iris-a-grade-de-vizinhanca-numero-de-iteracoes-de-treinamento-e-taxa-de-aprendizado" class="section level2">
+<h2>Constrói o modelo de rede com os dados do dataset iris, a grade de vizinhança, número de iterações de treinamento e taxa de aprendizado:</h2>
+<pre class="r"><code>iris.som = som(iris.sc, grid=iris.grid, rlen=500, alpha=c(0.05,0.01))</code></pre>
+</div>
+<div id="plota-o-grafico-que-exibe-a-efetividade-de-aprendizado-pelo-numero-de-iteracoees" class="section level2">
+<h2>Plota o gráfico que exibe a efetividade de aprendizado pelo número de iteraçõees</h2>
+<pre class="r"><code>plot(iris.som, type=&quot;changes&quot;)</code></pre>
+<p><img src="Index_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+</div>
+<div id="exibe-a-quantidade-de-amostras-mapeadas-por-neuronio" class="section level2">
+<h2>Exibe a quantidade de amostras mapeadas por neurônio:</h2>
+<pre class="r"><code>plot(iris.som, type=&quot;count&quot;)</code></pre>
+<p><img src="Index_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+</div>
+<div id="exibe-a-medias-dos-atributos-mapeados-por-neuronio" class="section level2">
+<h2>Exibe a médias dos atributos mapeados por neurônio:</h2>
+<pre class="r"><code>plot(iris.som, type=&quot;codes&quot;)</code></pre>
+<p><img src="Index_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+</div>
+<div id="faz-o-heatmap-baseado-em-cada-atributo" class="section level2">
+<h2>Faz o heatmap baseado em cada atributo:</h2>
+<p>Comprimento da pétala</p>
+<pre class="r"><code>coolBlueHotRed &lt;- function(n, alpha = 1) {rainbow(n, end=4/6, alpha=alpha)[n:1]}
+plot(iris.som, type = &quot;property&quot;, property = iris.som$codes[[1]][,4], main=names(iris.som$data)[4], palette.name=coolBlueHotRed)</code></pre>
+<p><img src="Index_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>Largura da pétala</p>
+<pre class="r"><code>coolBlueHotRed &lt;- function(n, alpha = 1) {rainbow(n, end=4/6, alpha=alpha)[n:1]}
+plot(iris.som, type = &quot;property&quot;, property = iris.som$codes[[1]][,3], main=names(iris.som$data)[3], palette.name=coolBlueHotRed)</code></pre>
+<p><img src="Index_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>Comprimento da sétala</p>
+<pre class="r"><code>coolBlueHotRed &lt;- function(n, alpha = 1) {rainbow(n, end=4/6, alpha=alpha)[n:1]}
+plot(iris.som, type = &quot;property&quot;, property = iris.som$codes[[1]][,2], main=names(iris.som$data)[2], palette.name=coolBlueHotRed)</code></pre>
+<p><img src="Index_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>#Largura da sétala</p>
+<pre class="r"><code>coolBlueHotRed &lt;- function(n, alpha = 1) {rainbow(n, end=4/6, alpha=alpha)[n:1]}
+plot(iris.som, type = &quot;property&quot;, property = iris.som$codes[[1]][,1], main=names(iris.som$data)[1], palette.name=coolBlueHotRed)</code></pre>
+<p><img src="Index_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+</div>
+<div id="exibe-a-relacao-de-vizinhanca-em-distancia." class="section level2">
+<h2>Exibe a relação de vizinhança em distância.</h2>
+<p>Algo muito semelhança a matriz U:</p>
+<pre class="r"><code>plot(iris.som, type=&quot;dist.neighbours&quot;)</code></pre>
+<p><img src="Index_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+</div>
+<div id="faz-uma-clusterizacao-hierarrquica-dos-dados-ja-clusterizados-apenas-para-facilitar-a-exibicao" class="section level2">
+<h2>Faz uma clusterização hierarrquica, dos dados já clusterizados, apenas para facilitar a exibição:</h2>
+<pre class="r"><code>groups = 3
+iris.hc = cutree(hclust(dist(iris.som$codes[[1]][,1:4])), groups)
+#9- Adiciona a fronteira de cada cluster:</code></pre>
+</div>
+<div id="apresenta-os-provaveis-grupos-de-classificacao" class="section level2">
+<h2>Apresenta os provaveis grupos de classificação</h2>
+<pre class="r"><code>plot(iris.som, type=&quot;codes&quot;, bgcol=rainbow(groups)[iris.hc])</code></pre>
+<p><img src="Index_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+</div>
 </div>
 
 

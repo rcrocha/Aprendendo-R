@@ -9,22 +9,115 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+# Analise Exploratória de dados inicial
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+O objetivo é entender o uso de modelos de classificação tomando como base o dataset Iris do R.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+## Dataset Iris
+```{r iris}
+summary(iris)
 ```
 
-## Including Plots
+## Instalando pacotes
 
-You can also embed plots, for example:
+Para este caso precisaremos instalar a biblioteca [kohonen](https://cran.r-project.org/web/packages/kohonen/index.html)
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r kohonen}
+install.packages("kohonen")
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+## Carrega a biblioteca kohonen
+```{r}
+library("kohonen")
+```
+
+## Gerando semente
+
+Para que todos os resultados gerados de forma randomica seja sempre os mesmo é preciso definir uma semente.
+```{r}
+set.seed(593)
+```
+
+## Fazendo a escala e normalização dos dados do dataset iris:
+
+Media da coluna - valor do atributo dividido pelo desvio padrão da coluna
+
+```{r}
+iris.sc = scale(iris[, 1:4])
+```
+
+## Fazendo o setup da grade de vizinhança da rede SOM:
+```{r}
+iris.grid = somgrid(xdim = 5, ydim=5, topo="hexagonal")
+```
+##  Constrói o modelo de rede com os dados do dataset iris, a grade de vizinhança, número de iterações de treinamento e taxa de aprendizado:
+```{r}
+iris.som = som(iris.sc, grid=iris.grid, rlen=500, alpha=c(0.05,0.01))
+```
+
+## Plota o gráfico que exibe a efetividade de aprendizado pelo número de iteraçõees
+```{r}
+plot(iris.som, type="changes")
+```
+
+## Exibe a quantidade de amostras mapeadas por neurônio:
+
+```{r}
+plot(iris.som, type="count")
+```
+
+## Exibe a médias dos atributos mapeados por neurônio:
+
+```{r}
+plot(iris.som, type="codes")
+```
+
+
+## Faz o heatmap baseado em cada atributo:
+
+ Comprimento da pétala
+```{r}
+coolBlueHotRed <- function(n, alpha = 1) {rainbow(n, end=4/6, alpha=alpha)[n:1]}
+plot(iris.som, type = "property", property = iris.som$codes[[1]][,4], main=names(iris.som$data)[4], palette.name=coolBlueHotRed)
+```
+
+Largura da pétala
+
+```{r}
+coolBlueHotRed <- function(n, alpha = 1) {rainbow(n, end=4/6, alpha=alpha)[n:1]}
+plot(iris.som, type = "property", property = iris.som$codes[[1]][,3], main=names(iris.som$data)[3], palette.name=coolBlueHotRed)
+```
+
+Comprimento da sétala
+
+```{r}
+coolBlueHotRed <- function(n, alpha = 1) {rainbow(n, end=4/6, alpha=alpha)[n:1]}
+plot(iris.som, type = "property", property = iris.som$codes[[1]][,2], main=names(iris.som$data)[2], palette.name=coolBlueHotRed)
+```
+
+#Largura da sétala
+
+```{r}
+coolBlueHotRed <- function(n, alpha = 1) {rainbow(n, end=4/6, alpha=alpha)[n:1]}
+plot(iris.som, type = "property", property = iris.som$codes[[1]][,1], main=names(iris.som$data)[1], palette.name=coolBlueHotRed)
+```
+
+
+## Exibe a relação de vizinhança em distância.
+
+Algo muito semelhança a matriz U:
+```{r}
+plot(iris.som, type="dist.neighbours")
+```
+
+## Faz uma clusterização hierarrquica, dos dados já clusterizados, apenas para facilitar a exibição:
+```{r}
+groups = 3
+iris.hc = cutree(hclust(dist(iris.som$codes[[1]][,1:4])), groups)
+#9- Adiciona a fronteira de cada cluster:
+```
+
+## Apresenta os provaveis grupos de classificação
+```{r}
+plot(iris.som, type="codes", bgcol=rainbow(groups)[iris.hc])
+```
