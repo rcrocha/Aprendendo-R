@@ -12,7 +12,6 @@
 
 <meta name="author" content="Rubens Cabral da Rocha" />
 
-<meta name="date" content="2019-05-10" />
 
 <title>Index</title>
 
@@ -293,7 +292,6 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Index</h1>
 <h4 class="author">Rubens Cabral da Rocha</h4>
-<h4 class="date">05/10/2019</h4>
 
 </div>
 
@@ -323,7 +321,10 @@ $(document).ready(function () {
 <h2>Instalando pacotes</h2>
 <p>Para este caso precisaremos instalar a biblioteca <a href="https://cran.r-project.org/web/packages/kohonen/index.html">kohonen</a></p>
 <pre class="r"><code>install.packages(&quot;kohonen&quot;)</code></pre>
-<pre><code>## Error in install.packages : Updating loaded packages</code></pre>
+<pre><code>## package &#39;kohonen&#39; successfully unpacked and MD5 sums checked
+## 
+## The downloaded binary packages are in
+##  C:\Users\rcrocha\AppData\Local\Temp\Rtmpc1TeYu\downloaded_packages</code></pre>
 </div>
 <div id="carrega-a-biblioteca-kohonen" class="section level2">
 <h2>Carrega a biblioteca kohonen</h2>
@@ -372,11 +373,11 @@ plot(iris.som, type = &quot;property&quot;, property = iris.som$codes[[1]][,4], 
 <pre class="r"><code>coolBlueHotRed &lt;- function(n, alpha = 1) {rainbow(n, end=4/6, alpha=alpha)[n:1]}
 plot(iris.som, type = &quot;property&quot;, property = iris.som$codes[[1]][,3], main=names(iris.som$data)[3], palette.name=coolBlueHotRed)</code></pre>
 <p><img src="Index_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
-<p>Comprimento da sétala</p>
+<p>Comprimento da sépala</p>
 <pre class="r"><code>coolBlueHotRed &lt;- function(n, alpha = 1) {rainbow(n, end=4/6, alpha=alpha)[n:1]}
 plot(iris.som, type = &quot;property&quot;, property = iris.som$codes[[1]][,2], main=names(iris.som$data)[2], palette.name=coolBlueHotRed)</code></pre>
 <p><img src="Index_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
-<p>#Largura da sétala</p>
+<p>#Largura da sépala</p>
 <pre class="r"><code>coolBlueHotRed &lt;- function(n, alpha = 1) {rainbow(n, end=4/6, alpha=alpha)[n:1]}
 plot(iris.som, type = &quot;property&quot;, property = iris.som$codes[[1]][,1], main=names(iris.som$data)[1], palette.name=coolBlueHotRed)</code></pre>
 <p><img src="Index_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
